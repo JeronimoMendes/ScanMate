@@ -7,5 +7,6 @@ requires-python = ">=3.13"
 dependencies = [
     "chess>=1.11.2",
     "chess-cv>=0.7.2",
+    "fastapi[standard]>=0.128.0",
     "opencv-python>=4.13.0.90",
 ]
