@@ -156,37 +156,40 @@
   }
 </script>
 
-<main class="min-h-dvh bg-neutral-950 text-neutral-200 p-5 flex flex-col font-sans safe-area">
+<main class="min-h-dvh bg-wood-dark text-cream p-5 flex flex-col font-sans safe-area">
   {#if error}
-    <div class="bg-red-900/50 border border-red-800 text-red-200 px-4 py-3 rounded-lg mb-4 text-sm">
+    <div class="bg-red-900/40 border border-red-800/50 text-red-200 px-4 py-3 rounded-2xl mb-4 text-sm">
       {error}
     </div>
   {/if}
 
   {#if !cameraStarted && !capturedImage}
     <div class="flex-1 flex flex-col items-center justify-center text-center max-w-sm mx-auto w-full">
-      <h1 class="text-2xl font-semibold text-neutral-100 mb-3">
-        Chess Board Scanner
+      <div class="mb-6">
+        <span class="text-5xl">♔</span>
+      </div>
+      <h1 class="text-3xl font-semibold text-cream mb-2 tracking-tight">
+        ScanMate
       </h1>
-      <p class="text-neutral-500 text-sm mb-12">
-        Capture a chess board to extract FEN notation
+      <p class="text-wood-muted text-sm mb-12">
+        Snap a board, get the position
       </p>
 
       <div class="w-full space-y-3">
         <button
           on:click={startCamera}
-          class="w-full py-4 px-6 bg-white text-neutral-900 font-medium rounded-xl transition-all active:scale-[0.98] active:bg-neutral-200"
+          class="w-full py-4 px-6 bg-cream text-wood-dark font-semibold rounded-2xl transition-all active:scale-[0.98] active:bg-cream-dark shadow-lg shadow-black/20"
         >
           Start Camera
         </button>
 
         <div class="flex items-center gap-4 py-2">
-          <div class="flex-1 h-px bg-neutral-800"></div>
-          <span class="text-neutral-600 text-xs">or</span>
-          <div class="flex-1 h-px bg-neutral-800"></div>
+          <div class="flex-1 h-px bg-wood-light/30"></div>
+          <span class="text-wood-muted text-xs">or</span>
+          <div class="flex-1 h-px bg-wood-light/30"></div>
         </div>
 
-        <label class="block w-full py-4 px-6 bg-neutral-900 border border-neutral-800 text-neutral-300 font-medium rounded-xl text-center cursor-pointer transition-all active:scale-[0.98] active:bg-neutral-800">
+        <label class="block w-full py-4 px-6 bg-wood border border-wood-light/30 text-cream-muted font-medium rounded-2xl text-center cursor-pointer transition-all active:scale-[0.98] active:bg-wood-light/20">
           Choose from Gallery
           <input type="file" accept="image/*" on:change={handleFileSelect} class="hidden" />
         </label>
@@ -196,7 +199,7 @@
 
   {#if cameraStarted}
     <div class="flex-1 flex flex-col max-w-lg mx-auto w-full">
-      <div bind:this={cameraContainer} class="relative flex-1 flex items-center justify-center bg-black rounded-xl overflow-hidden">
+      <div bind:this={cameraContainer} class="relative max-h-[calc(100dvh-180px)] flex items-center justify-center bg-black rounded-2xl overflow-hidden border-2 border-wood-light/20">
         <video
           bind:this={videoElement}
           autoplay
@@ -205,8 +208,8 @@
           class="w-full h-full object-cover"
         ></video>
         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-          <div bind:this={guideRect} class="guide-rect w-[80%] max-w-[320px] aspect-square border-2 border-white/70 rounded"></div>
-          <p class="absolute bottom-4 text-white/60 text-xs">
+          <div bind:this={guideRect} class="guide-rect w-[80%] max-w-[320px] aspect-square border-2 border-cream/70 rounded-lg"></div>
+          <p class="absolute bottom-4 text-cream/60 text-xs">
             Align board within square
           </p>
         </div>
@@ -215,9 +218,9 @@
       <div class="py-6 flex justify-center">
         <button
           on:click={capturePhoto}
-          class="w-[72px] h-[72px] bg-white rounded-full flex items-center justify-center transition-all active:scale-95"
+          class="w-[72px] h-[72px] bg-cream rounded-full flex items-center justify-center transition-all active:scale-95 shadow-lg shadow-black/30"
         >
-          <span class="w-14 h-14 bg-neutral-950 rounded-full border-[3px] border-white"></span>
+          <span class="w-14 h-14 bg-wood-dark rounded-full border-[3px] border-cream"></span>
         </button>
       </div>
     </div>
@@ -229,23 +232,23 @@
         <img
           src={capturedImage}
           alt="Captured chess board"
-          class="max-w-full max-h-[50vh] object-contain rounded-xl"
+          class="max-w-full max-h-[50vh] object-contain rounded-2xl border-2 border-wood-light/20"
         />
       </div>
 
       <div class="py-6 space-y-3">
-        <p class="text-center text-neutral-400 text-sm mb-4">Use this image?</p>
+        <p class="text-center text-wood-muted text-sm mb-4">Use this image?</p>
         <div class="flex gap-3">
           <button
             on:click={retakePhoto}
-            class="flex-1 py-4 px-6 bg-neutral-900 border border-neutral-800 text-neutral-300 font-medium rounded-xl transition-all active:scale-[0.98] active:bg-neutral-800"
+            class="flex-1 py-4 px-6 bg-wood border border-wood-light/30 text-cream-muted font-medium rounded-2xl transition-all active:scale-[0.98] active:bg-wood-light/20"
           >
             Retake
           </button>
           <button
             on:click={submitPhoto}
             disabled={isLoading}
-            class="flex-1 py-4 px-6 bg-white disabled:opacity-40 text-neutral-900 font-medium rounded-xl transition-all active:scale-[0.98] active:bg-neutral-200"
+            class="flex-1 py-4 px-6 bg-cream disabled:opacity-40 text-wood-dark font-semibold rounded-2xl transition-all active:scale-[0.98] active:bg-cream-dark shadow-lg shadow-black/20"
           >
             {isLoading ? 'Analyzing...' : 'Analyze'}
           </button>
@@ -260,12 +263,12 @@
         <img
           src={capturedImage}
           alt="Analyzed chess board"
-          class="max-w-full max-h-[35vh] object-contain rounded-xl mx-auto mb-6"
+          class="max-w-full max-h-[35vh] object-contain rounded-2xl mx-auto mb-6 border-2 border-wood-light/20"
         />
 
-        <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl">
-          <span class="block text-[11px] text-neutral-500 uppercase tracking-wider mb-2">FEN</span>
-          <code class="block text-neutral-100 font-mono text-sm break-all leading-relaxed">
+        <div class="bg-wood border border-wood-light/30 p-4 rounded-2xl">
+          <span class="block text-[11px] text-wood-muted uppercase tracking-wider mb-2">FEN Notation</span>
+          <code class="block text-cream font-mono text-sm break-all leading-relaxed">
             {fenResult}
           </code>
         </div>
@@ -274,13 +277,13 @@
       <div class="py-6 space-y-3">
         <button
           on:click={openOnLichess}
-          class="w-full py-4 px-6 bg-white text-neutral-900 font-medium rounded-xl transition-all active:scale-[0.98] active:bg-neutral-200"
+          class="w-full py-4 px-6 bg-cream text-wood-dark font-semibold rounded-2xl transition-all active:scale-[0.98] active:bg-cream-dark shadow-lg shadow-black/20"
         >
           Open on Lichess
         </button>
         <button
           on:click={resetToStart}
-          class="w-full py-4 px-6 bg-neutral-900 border border-neutral-800 text-neutral-300 font-medium rounded-xl transition-all active:scale-[0.98] active:bg-neutral-800"
+          class="w-full py-4 px-6 bg-wood border border-wood-light/30 text-cream-muted font-medium rounded-2xl transition-all active:scale-[0.98] active:bg-wood-light/20"
         >
           Scan Another
         </button>
@@ -297,6 +300,10 @@
     touch-action: manipulation;
   }
 
+  :global(body) {
+    background-color: #1a1512;
+  }
+
   .safe-area {
     padding-top: max(1.25rem, env(safe-area-inset-top));
     padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
@@ -308,5 +315,70 @@
 
   .guide-rect {
     box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Warm Wood Theme Colors */
+  .bg-wood-dark {
+    background-color: #1a1512;
+  }
+
+  .bg-wood {
+    background-color: #2d2319;
+  }
+
+  .bg-wood-light\/20 {
+    background-color: rgba(61, 47, 34, 0.2);
+  }
+
+  .border-wood-light\/20 {
+    border-color: rgba(61, 47, 34, 0.2);
+  }
+
+  .border-wood-light\/30 {
+    border-color: rgba(61, 47, 34, 0.3);
+  }
+
+  .bg-cream {
+    background-color: #f5e6d3;
+  }
+
+  .bg-cream-dark {
+    background-color: #e8d5c4;
+  }
+
+  .text-cream {
+    color: #f5e6d3;
+  }
+
+  .text-cream-muted {
+    color: #d4c4b0;
+  }
+
+  .text-cream\/60 {
+    color: rgba(245, 230, 211, 0.6);
+  }
+
+  .text-cream\/70 {
+    color: rgba(245, 230, 211, 0.7);
+  }
+
+  .border-cream {
+    border-color: #f5e6d3;
+  }
+
+  .border-cream\/70 {
+    border-color: rgba(245, 230, 211, 0.7);
+  }
+
+  .text-wood-dark {
+    color: #1a1512;
+  }
+
+  .text-wood-muted {
+    color: #8b7355;
+  }
+
+  .bg-wood-light\/30 {
+    background-color: rgba(61, 47, 34, 0.3);
   }
 </style>

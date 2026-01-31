@@ -35,9 +35,7 @@ class BoardDetector:
 
         gaussian_blur = cv2.GaussianBlur(gray_image, (5, 5), 0)
 
-        ret, otsu_binary = cv2.threshold(
-            gaussian_blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
-        )
+        ret, otsu_binary = cv2.threshold(gaussian_blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
         canny = cv2.Canny(otsu_binary, 20, 255)
 
@@ -65,9 +63,7 @@ class BoardDetector:
 
         img_dilation_2 = cv2.dilate(img_dilation, kernel, iterations=1)
 
-        board_contours, hierarchy = cv2.findContours(
-            img_dilation_2, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE
-        )
+        board_contours, hierarchy = cv2.findContours(img_dilation_2, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         square_centers = list()
 
@@ -131,12 +127,8 @@ class BoardDetector:
         for num in range(len(sorted_coordinates) - 1):
             if abs(sorted_coordinates[num][1] - sorted_coordinates[num + 1][1]) < 50:
                 if sorted_coordinates[num + 1][0] - sorted_coordinates[num][0] > 150:
-                    x = (
-                        sorted_coordinates[num + 1][0] + sorted_coordinates[num][0]
-                    ) / 2
-                    y = (
-                        sorted_coordinates[num + 1][1] + sorted_coordinates[num][1]
-                    ) / 2
+                    x = (sorted_coordinates[num + 1][0] + sorted_coordinates[num][0]) / 2
+                    y = (sorted_coordinates[num + 1][1] + sorted_coordinates[num][1]) / 2
                     p1 = sorted_coordinates[num + 1][5]
                     p2 = sorted_coordinates[num + 1][4]
                     p3 = sorted_coordinates[num][3]
@@ -183,9 +175,7 @@ class BoardDetector:
         kernel = np.ones((3, 3), np.uint8)
         dilated = cv2.dilate(edges, kernel, iterations=2)
 
-        contours, _ = cv2.findContours(
-            dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
-        )
+        contours, _ = cv2.findContours(dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         if not contours:
             return None, debug_img
@@ -235,13 +225,9 @@ class BoardDetector:
         top_left, top_right = top_points[np.argsort(top_points[:, 0])]
         bottom_left, bottom_right = bottom_points[np.argsort(bottom_points[:, 0])]
 
-        return np.array(
-            [top_left, top_right, bottom_right, bottom_left], dtype=np.float32
-        )
+        return np.array([top_left, top_right, bottom_right, bottom_left], dtype=np.float32)
 
-    def warp_board(
-        self, image: Image.Image, corners: np.ndarray, output_size: int = 800
-    ) -> np.ndarray:
+    def warp_board(self, image: Image.Image, corners: np.ndarray, output_size: int = 800) -> np.ndarray:
         """Apply perspective transform to extract a top-down square view of the board."""
         img = np.array(image)
 
