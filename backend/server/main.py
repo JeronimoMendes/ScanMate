@@ -1,11 +1,12 @@
+from typing import Annotated
+
 from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 
 from core.board.detector import BoardDetector
 
 app = FastAPI()
-
-from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,6 +17,7 @@ app.add_middleware(
 
 
 @app.post("/fen")
+def get_fen(board_file: Annotated[UploadFile, File()]):
 def get_fen(board_file: UploadFile = File(...)):
     board_image = Image.open(board_file.file)
     board_detector = BoardDetector()

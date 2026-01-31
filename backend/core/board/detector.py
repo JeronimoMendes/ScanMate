@@ -32,7 +32,6 @@ class BoardDetector:
         """
         image = np.array(image)
         gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
         gaussian_blur = cv2.GaussianBlur(gray_image, (5, 5), 0)
 
@@ -56,7 +55,7 @@ class BoardDetector:
         )
 
         if lines is not None:
-            for i, line in enumerate(lines):
+            for line in lines:
                 x1, y1, x2, y2 = line[0]
 
                 # draws lines
@@ -210,7 +209,7 @@ class BoardDetector:
         colors = [(0, 255, 0), (255, 0, 0), (0, 0, 255), (255, 255, 0)]
         labels = ["TL", "TR", "BR", "BL"]
 
-        for corner, color, label in zip(corners, colors, labels):
+        for corner, color, label in zip(corners, colors, labels, strict=False):
             x, y = int(corner[0]), int(corner[1])
             cv2.circle(debug_img, (x, y), 10, color, -1)
             cv2.putText(
