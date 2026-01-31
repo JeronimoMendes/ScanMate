@@ -10,3 +10,14 @@ dependencies = [
     "fastapi[standard]>=0.128.0",
     "opencv-python>=4.13.0.90",
 ]
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+exclude = ["__pycache__", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "B", "UP"]
+
+[tool.ruff.format]
+quote-style = "double"
