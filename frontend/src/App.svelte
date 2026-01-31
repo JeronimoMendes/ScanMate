@@ -175,21 +175,21 @@
         Snap a board, get the position
       </p>
 
-      <div class="w-full space-y-3">
+      <div class="w-full space-y-4">
         <button
           on:click={startCamera}
-          class="w-full py-4 px-6 bg-cream text-wood-dark font-semibold rounded-2xl transition-all active:scale-[0.98] active:bg-cream-dark shadow-lg shadow-black/20"
+          class="btn-primary w-full"
         >
           Start Camera
         </button>
 
         <div class="flex items-center gap-4 py-2">
           <div class="flex-1 h-px bg-wood-light/30"></div>
-          <span class="text-wood-muted text-xs">or</span>
+          <span class="text-wood-muted text-xs uppercase tracking-wider">or</span>
           <div class="flex-1 h-px bg-wood-light/30"></div>
         </div>
 
-        <label class="block w-full py-4 px-6 bg-wood border border-wood-light/30 text-cream-muted font-medium rounded-2xl text-center cursor-pointer transition-all active:scale-[0.98] active:bg-wood-light/20">
+        <label class="btn-secondary w-full cursor-pointer">
           Choose from Gallery
           <input type="file" accept="image/*" on:change={handleFileSelect} class="hidden" />
         </label>
@@ -218,9 +218,9 @@
       <div class="py-6 flex justify-center">
         <button
           on:click={capturePhoto}
-          class="w-[72px] h-[72px] bg-cream rounded-full flex items-center justify-center transition-all active:scale-95 shadow-lg shadow-black/30"
+          class="shutter-btn"
         >
-          <span class="w-14 h-14 bg-wood-dark rounded-full border-[3px] border-cream"></span>
+          <span class="shutter-btn-inner"></span>
         </button>
       </div>
     </div>
@@ -236,19 +236,19 @@
         />
       </div>
 
-      <div class="py-6 space-y-3">
-        <p class="text-center text-wood-muted text-sm mb-4">Use this image?</p>
+      <div class="py-6 space-y-4">
+        <p class="text-center text-wood-muted text-sm mb-4 uppercase tracking-wider">Use this image?</p>
         <div class="flex gap-3">
           <button
             on:click={retakePhoto}
-            class="flex-1 py-4 px-6 bg-wood border border-wood-light/30 text-cream-muted font-medium rounded-2xl transition-all active:scale-[0.98] active:bg-wood-light/20"
+            class="btn-secondary flex-1"
           >
             Retake
           </button>
           <button
             on:click={submitPhoto}
             disabled={isLoading}
-            class="flex-1 py-4 px-6 bg-cream disabled:opacity-40 text-wood-dark font-semibold rounded-2xl transition-all active:scale-[0.98] active:bg-cream-dark shadow-lg shadow-black/20"
+            class="btn-primary flex-1 disabled:opacity-40"
           >
             {isLoading ? 'Analyzing...' : 'Analyze'}
           </button>
@@ -266,7 +266,7 @@
           class="max-w-full max-h-[35vh] object-contain rounded-2xl mx-auto mb-6 border-2 border-wood-light/20"
         />
 
-        <div class="bg-wood border border-wood-light/30 p-4 rounded-2xl">
+        <div class="fen-display">
           <span class="block text-[11px] text-wood-muted uppercase tracking-wider mb-2">FEN Notation</span>
           <code class="block text-cream font-mono text-sm break-all leading-relaxed">
             {fenResult}
@@ -274,16 +274,16 @@
         </div>
       </div>
 
-      <div class="py-6 space-y-3">
+      <div class="py-6 space-y-4">
         <button
           on:click={openOnLichess}
-          class="w-full py-4 px-6 bg-cream text-wood-dark font-semibold rounded-2xl transition-all active:scale-[0.98] active:bg-cream-dark shadow-lg shadow-black/20"
+          class="btn-primary w-full"
         >
           Open on Lichess
         </button>
         <button
           on:click={resetToStart}
-          class="w-full py-4 px-6 bg-wood border border-wood-light/30 text-cream-muted font-medium rounded-2xl transition-all active:scale-[0.98] active:bg-wood-light/20"
+          class="btn-secondary w-full"
         >
           Scan Another
         </button>
@@ -380,5 +380,112 @@
 
   .bg-wood-light\/30 {
     background-color: rgba(61, 47, 34, 0.3);
+  }
+
+  /* Arcade-Style Buttons */
+  .btn-primary {
+    display: block;
+    padding: 1rem 1.5rem;
+    background-color: #f5e6d3;
+    color: #1a1512;
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 0.75rem;
+    border: 3px solid;
+    border-color: #fff8f0 #c4a882 #a8896a #fff8f0;
+    box-shadow:
+      0 6px 0 #8b7355,
+      0 8px 12px rgba(0, 0, 0, 0.4);
+    transition: all 0.1s ease;
+    position: relative;
+    top: 0;
+  }
+
+  .btn-primary:active {
+    top: 4px;
+    box-shadow:
+      0 2px 0 #8b7355,
+      0 3px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-secondary {
+    display: block;
+    padding: 1rem 1.5rem;
+    background-color: #3d2f22;
+    color: #d4c4b0;
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 0.75rem;
+    border: 3px solid;
+    border-color: #5a4535 #2a1f17 #1a1512 #5a4535;
+    box-shadow:
+      0 6px 0 #1a1512,
+      0 8px 12px rgba(0, 0, 0, 0.4);
+    transition: all 0.1s ease;
+    position: relative;
+    top: 0;
+  }
+
+  .btn-secondary:active {
+    top: 4px;
+    box-shadow:
+      0 2px 0 #1a1512,
+      0 3px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Shutter Button */
+  .shutter-btn {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(145deg, #fff8f0, #e8d5c4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid;
+    border-color: #fff #c4a882 #a8896a #fff;
+    box-shadow:
+      0 6px 0 #8b7355,
+      0 8px 16px rgba(0, 0, 0, 0.5);
+    transition: all 0.1s ease;
+    position: relative;
+    top: 0;
+  }
+
+  .shutter-btn:active {
+    top: 4px;
+    box-shadow:
+      0 2px 0 #8b7355,
+      0 3px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .shutter-btn-inner {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(145deg, #2d2319, #1a1512);
+    border-radius: 50%;
+    border: 3px solid #f5e6d3;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  /* FEN Display */
+  .fen-display {
+    background-color: #2d2319;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: 3px solid;
+    border-color: #5a4535 #1a1512 #1a1512 #5a4535;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
   }
 </style>
