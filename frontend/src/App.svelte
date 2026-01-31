@@ -40,44 +40,38 @@
   }
 
   function capturePhoto() {
-    const ctx = canvasElement.getContext('2d');
+    const vw = videoElement.videoWidth;
+    const vh = videoElement.videoHeight;
+    const container = cameraContainer.getBoundingClientRect();
+    const guide = guideRect.getBoundingClientRect();
 
-    const videoWidth = videoElement.videoWidth;
-    const videoHeight = videoElement.videoHeight;
-    const containerRect = cameraContainer.getBoundingClientRect();
-    const guideRectBounds = guideRect.getBoundingClientRect();
+    const videoAspect = vw / vh;
+    const containerAspect = container.width / container.height;
 
-    const containerAspect = containerRect.width / containerRect.height;
-    const videoAspect = videoWidth / videoHeight;
-
-    let scale, offsetX, offsetY;
+    let scale, cropOffsetX, cropOffsetY;
 
     if (videoAspect > containerAspect) {
-      scale = containerRect.height / videoHeight;
-      offsetX = (videoWidth * scale - containerRect.width) / 2;
-      offsetY = 0;
+      scale = container.height / vh;
+      cropOffsetX = (vw * scale - container.width) / 2;
+      cropOffsetY = 0;
     } else {
-      scale = containerRect.width / videoWidth;
-      offsetX = 0;
-      offsetY = (videoHeight * scale - containerRect.height) / 2;
+      scale = container.width / vw;
+      cropOffsetX = 0;
+      cropOffsetY = (vh * scale - container.height) / 2;
     }
 
-    const guideX = guideRectBounds.left - containerRect.left;
-    const guideY = guideRectBounds.top - containerRect.top;
-    const guideSize = guideRectBounds.width;
+    const guideX = guide.left - container.left;
+    const guideY = guide.top - container.top;
+    const guideSize = guide.width;
 
-    const srcX = (guideX + offsetX) / scale;
-    const srcY = (guideY + offsetY) / scale;
+    const srcX = (guideX + cropOffsetX) / scale;
+    const srcY = (guideY + cropOffsetY) / scale;
     const srcSize = guideSize / scale;
 
     canvasElement.width = srcSize;
     canvasElement.height = srcSize;
-
-    ctx.drawImage(
-      videoElement,
-      srcX, srcY, srcSize, srcSize,
-      0, 0, srcSize, srcSize
-    );
+    const ctx = canvasElement.getContext('2d');
+    ctx.drawImage(videoElement, srcX, srcY, srcSize, srcSize, 0, 0, srcSize, srcSize);
 
     capturedImage = canvasElement.toDataURL('image/jpeg', 0.9);
     canvasElement.toBlob(blob => {
@@ -130,12 +124,23 @@
     const file = event.target.files[0];
     if (!file) return;
 
-    capturedBlob = file;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      capturedImage = e.target.result;
+    const img = new Image();
+    img.onload = () => {
+      const size = Math.min(img.width, img.height);
+      const x = (img.width - size) / 2;
+      const y = (img.height - size) / 2;
+
+      canvasElement.width = size;
+      canvasElement.height = size;
+      const ctx = canvasElement.getContext('2d');
+      ctx.drawImage(img, x, y, size, size, 0, 0, size, size);
+
+      capturedImage = canvasElement.toDataURL('image/jpeg', 0.9);
+      canvasElement.toBlob(blob => {
+        capturedBlob = blob;
+      }, 'image/jpeg', 0.9);
     };
-    reader.readAsDataURL(file);
+    img.src = URL.createObjectURL(file);
   }
 
   function resetToStart() {
@@ -191,10 +196,7 @@
 
   {#if cameraStarted}
     <div class="flex-1 flex flex-col max-w-lg mx-auto w-full">
-      <div
-        bind:this={cameraContainer}
-        class="relative flex-1 flex items-center justify-center bg-black rounded-xl overflow-hidden"
-      >
+      <div bind:this={cameraContainer} class="relative flex-1 flex items-center justify-center bg-black rounded-xl overflow-hidden">
         <video
           bind:this={videoElement}
           autoplay
@@ -203,10 +205,7 @@
           class="w-full h-full object-cover"
         ></video>
         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-          <div
-            bind:this={guideRect}
-            class="guide-rect w-[80%] max-w-[320px] aspect-square border-2 border-white/70 rounded"
-          ></div>
+          <div bind:this={guideRect} class="guide-rect w-[80%] max-w-[320px] aspect-square border-2 border-white/70 rounded"></div>
           <p class="absolute bottom-4 text-white/60 text-xs">
             Align board within square
           </p>
